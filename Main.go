@@ -11,6 +11,7 @@ import (
 var arr []string
 
 func loadArr(file string) error {
+	arr = nil
 	f, err := os.Open(file)
 	if err != nil {
 		return err
@@ -79,18 +80,30 @@ func splitNumbers(file string) {
 //Task_2
 
 func Task_2(fail string) {
+	loadArr(fail)
 	var str string
-	for _, s:= range arr{
-		str+=s
+	var strNum string
+	for _, str = range arr {
 	}
-	fmt.Println(str)
-	//var card int
-	//fmt.Println("Enter bank card number")
-	//fmt.Scan(&card)
+	for i := 0; i < len(str); i++ {
+		if string(str[i]) == " " {
+			continue
+		}
+		strNum += string(str[i])
+	}
+	var card string
+	fmt.Println("Enter bank card number")
+	fmt.Scan(&card)
+	strings.TrimRight(card, "/n")
+	if len(card) == 16 {
+		if card == strNum {
+			fmt.Println(str[:14], "**** - is true")
 
+		}else {fmt.Println("Your card is wrong")}
+	}else {fmt.Println("Your card is wrong")}
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Task_3
 
@@ -266,11 +279,16 @@ func hardForm(min, max int) int {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func main() {
-	//chessboard(4,6)
+	//fmt.Println("///////////////////////////////////////////////////////////////")
+	//chessboard(4, 6)
+	//fmt.Println("///////////////////////////////////////////////////////////////")
 	//splitNumbers("Task01.txt")
-	Task_2("Task02.txt")
+	//fmt.Println("///////////////////////////////////////////////////////////////")
+	//Task_2("Task02.txt")
+	//fmt.Println("///////////////////////////////////////////////////////////////")
 	//printFib(10)
+	//fmt.Println("///////////////////////////////////////////////////////////////")
 	//palindrome("Task04.txt")
-	//luckyTickets(120123,320320)
-
+	fmt.Println("///////////////////////////////////////////////////////////////")
+	luckyTickets(120123, 320320)
 }
