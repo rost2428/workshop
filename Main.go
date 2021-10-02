@@ -8,11 +8,28 @@ import (
 	"strings"
 )
 
+var arr []string
+
+func loadArr(file string) error {
+	f, err := os.Open(file)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	scan := bufio.NewScanner(f)
+	for scan.Scan() {
+		arr = append(arr, scan.Text())
+	}
+	return scan.Err()
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //Task_0
-//Print a chessboard with the specified dimensions of height and width, according to the example height - 4 and wigth 6:
-func chessboard() {
-	height := 4
-	width := 6
+//Print a chessboard
+func chessboard(h, w int) {
+	height := h
+	width := w
 
 	for i := 0; i < height; i++ {
 		for j := 0; j < width*2; j++ {
@@ -37,24 +54,11 @@ func chessboard() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //Task_1
-var arr []string
 
-func loadArr(file string) error {
-	f, err := os.Open(file)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	scan := bufio.NewScanner(f)
-	for scan.Scan() {
-		arr = append(arr, scan.Text())
-	}
-	return scan.Err()
-}
-func scanArrStr() {
+func splitNumbers(file string) {
 	var str string
 	var num = 0
-	loadArr("Task01.txt")
+	loadArr(file)
 	for _, str = range arr {
 	}
 	arrStr := strings.Split(str, ",")
@@ -72,56 +76,143 @@ func scanArrStr() {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Task 3
+//Task_2
+
+func Task_2(fail string) {
+	var str string
+	for _, s:= range arr{
+		str+=s
+	}
+	fmt.Println(str)
+	//var card int
+	//fmt.Println("Enter bank card number")
+	//fmt.Scan(&card)
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Task_3
 
 func fib(n int) int {
 	if n < 2 {
 		return 1
 	}
-	return  fib(n-2) + fib(n-1)
+	return fib(n-2) + fib(n-1)
 }
-func printFib(j int)  {
-	for i:=0 ; i < j; i++ {
+func printFib(j int) {
+	for i := 0; i < j; i++ {
 		fmt.Println(fib(i))
 	}
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Task 4
+//Task_4
 
-func palindrome()  {
+func palindrome(file string) {
 	var str string
-	var num int
 
+	loadArr(file)
+	//var ch string
+	palindrome := "0"
+	for _, s := range arr {
+		str += s
+	}
+	for i := 0; i < len(str); i++ {
+		if i < 1 {
+			continue
+		}
+		if str[i] == str[i-1] {
+			palindrome = srchPalind_1((i - 1), i, str)
+			fmt.Println(palindrome)
+		}
+		if (i + 1) != len(str) {
+			if str[i+1] == str[i-1] {
+				palindrome = srchPalind_2((i - 1), (i + 1), str)
+				fmt.Println(palindrome)
+			}
+		}
+	}
+	if palindrome == "0" {
+		fmt.Println("palindrome = ", palindrome)
+	}
+}
 
+func srchPalind_1(nL, nR int, str string) string {
+	var palind string
+	for i := 0; ; i++ {
+		if (nL - i) == 0 {
+			for j := 0; j <= (nR + i); j++ {
+				palind += string(str[j])
+			}
+			break
+		}
+		if (nR + i) == len(str) {
+			for j := (nL - i); j <= (nR + i); j++ {
+				palind += string(str[j])
+			}
+			break
+		}
+		if (str[nL-i]) != (str[nR+i]) {
+			for j := (nL - i + 1); j <= (nR + i - 1); j++ {
+				palind += string(str[j])
+			}
+			break
+		}
+	}
+	return palind
+}
+
+func srchPalind_2(nL, nR int, str string) string {
+	var palind string
+	for i := 0; ; i++ {
+		if (nL - i) == 0 {
+			for j := 0; j <= (nR + i); j++ {
+				palind += string(str[j])
+			}
+			break
+		}
+		if (nR + i) == len(str) {
+			for j := (nL - i); j <= (nR + i); j++ {
+				palind += string(str[j])
+			}
+			break
+		}
+		if (str[nL-i]) != (str[nR+i]) {
+			for j := (nL - i + 1); j <= (nR + i - 1); j++ {
+				palind += string(str[j])
+			}
+			break
+		}
+	}
+	return palind
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//Task 5
+//Task_5
 
-func luckyTickets(min, max int)  {
+func luckyTickets(min, max int) {
 	Min := min
 	Max := max
 
 	var easyFormula int
 	var hardFormula int
 
-	easyFormula = easyForm(Min,Max)
-	hardFormula = hardForm(Min,Max)
+	easyFormula = easyForm(Min, Max)
+	hardFormula = hardForm(Min, Max)
 
 	fmt.Println("EasyFormula = ", easyFormula)
-	fmt.Println("HardFormula",hardFormula)
+	fmt.Println("HardFormula", hardFormula)
 }
 
-
-func easyForm(min, max int) int  {
+func easyForm(min, max int) int {
 	easyFormula := 0
 	for i := min; i <= max; i++ {
-		dig1 := i/1000
-		dig2 := i%1000
-		if ((dig1/100)+((dig1/10)%10)+(dig1%10)) == ((dig2/100)+((dig2/10)%10)+(dig2%10)){
+		dig1 := i / 1000
+		dig2 := i % 1000
+		if ((dig1 / 100) + ((dig1 / 10) % 10) + (dig1 % 10)) == ((dig2 / 100) + ((dig2 / 10) % 10) + (dig2 % 10)) {
 			//fmt.Println(i)
 			easyFormula++
 		}
@@ -129,42 +220,42 @@ func easyForm(min, max int) int  {
 	return easyFormula
 }
 
-func hardForm(min, max int) int  {
+func hardForm(min, max int) int {
 	hardFormula := 0
 	for i := min; i <= max; i++ {
 		dig1 := 0
 		dig2 := 0
 		if (i%10)%2 == 0 {
-			dig1+=i%10
-		}else {
-			dig2 += i%10
+			dig1 += i % 10
+		} else {
+			dig2 += i % 10
 		}
-		if(((i/10)%10)%2) == 0{
-			dig1+=(i/10)%10
-		}else {
-			dig2+=(i/10)%10
+		if (((i / 10) % 10) % 2) == 0 {
+			dig1 += (i / 10) % 10
+		} else {
+			dig2 += (i / 10) % 10
 		}
-		if(((i/100)%10)%2) == 0{
-			dig1+=(i/100)%10
-		}else {
-			dig2+=(i/100)%10
+		if (((i / 100) % 10) % 2) == 0 {
+			dig1 += (i / 100) % 10
+		} else {
+			dig2 += (i / 100) % 10
 		}
-		if(((i/1000)%10)%2) == 0{
-			dig1+=(i/1000)%10
-		}else {
-			dig2+=(i/1000)%10
+		if (((i / 1000) % 10) % 2) == 0 {
+			dig1 += (i / 1000) % 10
+		} else {
+			dig2 += (i / 1000) % 10
 		}
-		if(((i/10000)%10)%2) == 0{
-			dig1+=(i/10000)%10
-		}else {
-			dig2+=(i/10000)%10
+		if (((i / 10000) % 10) % 2) == 0 {
+			dig1 += (i / 10000) % 10
+		} else {
+			dig2 += (i / 10000) % 10
 		}
-		if(((i/100000)%10)%2) == 0{
-			dig1+=(i/100000)%10
-		}else {
-			dig2+=(i/100000)%10
+		if (((i / 100000) % 10) % 2) == 0 {
+			dig1 += (i / 100000) % 10
+		} else {
+			dig2 += (i / 100000) % 10
 		}
-		if dig1== dig2 {
+		if dig1 == dig2 {
 			//fmt.Println(i)
 			hardFormula++
 		}
@@ -175,9 +266,11 @@ func hardForm(min, max int) int  {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 func main() {
-	//	chessboard()
-	//scanArrStr()
+	//chessboard(4,6)
+	//splitNumbers("Task01.txt")
+	Task_2("Task02.txt")
 	//printFib(10)
+	//palindrome("Task04.txt")
 	//luckyTickets(120123,320320)
 
 }
